@@ -2,6 +2,10 @@ package cl.moriahdp.BaseApplicationMVP;
 
 import android.app.Application;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import cl.moriahdp.BaseApplicationMVP.db.AppDatabase;
 import cl.moriahdp.BaseApplicationMVP.utils.TinyDB;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -10,6 +14,7 @@ public class BaseApplication extends Application {
 
     private static BaseApplication instance;
     private TinyDB mTinyDB;
+    private final static Executor databaseIO = Executors.newSingleThreadExecutor();
 
     public BaseApplication() {
         instance = this;
@@ -26,20 +31,30 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mTinyDB = new TinyDB(this);
-        initRealm();
-    }
 
-    private void initRealm() {
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .build();
+        getDatabaseIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                AppDatabase.getDatabase(BaseApplication.this);
+            }
+        });
 
-        Realm.setDefaultConfiguration(config);
+//        Uncomment this if you want to clear database each time user open app
+//        getDatabaseIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                AppDatabase.getDatabase(BaseApplication.this).clearAllTables();
+//            }
+//        });
+
     }
 
     public TinyDB getTinyDB() {
         return mTinyDB;
+    }
+
+    public static Executor getDatabaseIO() {
+        return databaseIO;
     }
 
     @Override

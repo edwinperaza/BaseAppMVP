@@ -1,14 +1,21 @@
 package cl.moriahdp.BaseApplicationMVP.home.modelObject;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 
+@Entity
 public class HomeModelObject implements Serializable {
 
-
+    @PrimaryKey
+    @NonNull
     @SerializedName("title")
     @Expose
     private String title;
@@ -34,12 +41,33 @@ public class HomeModelObject implements Serializable {
 
     }
 
+    @Ignore
     public HomeModelObject(String title, String description, String videoUrl,
                            String imageUrl, String date) {
         this.title = title;
         this.description = description;
         this.videoUrl = videoUrl;
         this.imageUrl = imageUrl;
+        this.date = date;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setDate(String date) {
         this.date = date;
     }
 

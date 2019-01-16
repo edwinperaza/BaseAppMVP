@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cl.moriahdp.BaseApplicationMVP.BaseApplication;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
+import cl.moriahdp.BaseApplicationMVP.db.AppDatabase;
 import cl.moriahdp.BaseApplicationMVP.home.model.HomeModel;
 import cl.moriahdp.BaseApplicationMVP.home.presenter.HomePresenter;
 import cl.moriahdp.BaseApplicationMVP.home.view.HomeView;
@@ -41,7 +43,9 @@ public class HomeFragment extends BaseFragment implements IBackPressedCallback {
         homePresenter = new HomePresenter(
                 new HomeModel(
                         BusProvider.getInstance(),
-                        ApiUtils.getAPIService()),
+                        ApiUtils.getAPIService(),
+                        AppDatabase.getDatabase(getContext()),
+                        BaseApplication.getDatabaseIO()),
                 new HomeView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
     }
