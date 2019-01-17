@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.main.activities.DashboardActivity;
 import cl.moriahdp.BaseApplicationMVP.search.model.SearchModel;
 import cl.moriahdp.BaseApplicationMVP.search.presenter.SearchPresenter;
@@ -43,7 +44,7 @@ public class SearchFragment extends BaseFragment implements IBackPressedCallback
     protected View onCreateEventView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.fragment_events, container, false);
         searchPresenter = new SearchPresenter(
-                new SearchModel(BusProvider.getInstance()),
+                new SearchModel(new DataRepository(getContext()), BusProvider.getInstance()),
                 new SearchView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
 

@@ -13,7 +13,9 @@ import butterknife.ButterKnife;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.BaseApplication;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseActivity;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.registry.modelObject.UserModelObject;
+import cl.moriahdp.BaseApplicationMVP.repository.TutorialRepository;
 import cl.moriahdp.BaseApplicationMVP.tutorial.fragment.FirstFragment;
 import cl.moriahdp.BaseApplicationMVP.tutorial.fragment.FourthFragment;
 import cl.moriahdp.BaseApplicationMVP.tutorial.fragment.SecondFragment;
@@ -26,11 +28,9 @@ import cl.moriahdp.BaseApplicationMVP.utils.bus.BusProvider;
 
 public class TutorialActivity extends BaseActivity {
 
-    public static final String TUTORIAL_SHOWED = "tutorial_showed";
+
     private TutorialPresenter presenter;
-    private TutorialView view ;
     FragmentPagerAdapter adapterViewPager;
-    TextView skipTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,30 +39,17 @@ public class TutorialActivity extends BaseActivity {
 
         ViewPager vpPager = findViewById(R.id.vp_tutorial);
         InkPageIndicator inkPageIndicator = findViewById(R.id.indicator);
-        skipTextView = findViewById(R.id.tv_tutorial_skip);
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
 
         inkPageIndicator.setViewPager(vpPager);
-
-        view = new TutorialView(this, BusProvider.getInstance());
-        ButterKnife.bind(view, this);
-        presenter = new TutorialPresenter(new TutorialModel(BusProvider.getInstance()), view);
+        presenter = new TutorialPresenter(
+                new TutorialModel(new TutorialRepository(TutorialActivity.this, true), BusProvider.getInstance()),
+                new TutorialView(this, BusProvider.getInstance()));
         hideToolbar();
 
-        BaseApplication.getInstance().getTinyDB().putBoolean(TUTORIAL_SHOWED, true);
 
-        skipTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UserModelObject.isUserLoggedIn()) {
-                    view.goToDashBoard();
-                } else {
-                    view.goToLogin();
-                }
-            }
-        });
     }
 
     @Override

@@ -12,6 +12,7 @@ import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
 import cl.moriahdp.BaseApplicationMVP.contact.model.ContactModel;
 import cl.moriahdp.BaseApplicationMVP.contact.presenter.ContactPresenter;
 import cl.moriahdp.BaseApplicationMVP.contact.view.ContactView;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.main.activities.DashboardActivity;
 import cl.moriahdp.BaseApplicationMVP.utils.bus.BusProvider;
 
@@ -43,7 +44,7 @@ public class ContactFragment extends BaseFragment implements IBackPressedCallbac
     protected View onCreateEventView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.fragment_contact, container, false);
         contactPresenter = new ContactPresenter(
-                new ContactModel(BusProvider.getInstance()),
+                new ContactModel(new DataRepository(getContext()), BusProvider.getInstance()),
                 new ContactView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
     }

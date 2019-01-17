@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.home.modelObject.HomeModelObject;
 import cl.moriahdp.BaseApplicationMVP.homeDetail.model.HomeDetailModel;
 import cl.moriahdp.BaseApplicationMVP.homeDetail.presenter.HomeDetailPresenter;
@@ -46,7 +47,7 @@ public class HomeDetailFragment extends BaseFragment implements IBackPressedCall
         }
 
         homeDetailPresenter = new HomeDetailPresenter(
-                new HomeDetailModel(BusProvider.getInstance(), sermon),
+                new HomeDetailModel(new DataRepository(getContext()), BusProvider.getInstance(), sermon),
                 new HomeDetailView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
     }

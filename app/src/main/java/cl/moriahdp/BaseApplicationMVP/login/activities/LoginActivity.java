@@ -6,6 +6,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseActivity;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.login.model.LoginModel;
 import cl.moriahdp.BaseApplicationMVP.login.presenter.LoginPresenter;
 import cl.moriahdp.BaseApplicationMVP.login.view.LoginView;
@@ -24,7 +25,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         LoginView loginView = new LoginView(this, BusProvider.getInstance());
         ButterKnife.bind(loginView, this);
-        mLoginPresenter = new LoginPresenter(new LoginModel(BusProvider.getInstance()), loginView);
+        mLoginPresenter = new LoginPresenter(new LoginModel(new DataRepository(LoginActivity.this), BusProvider.getInstance()), loginView);
         hideToolbar();
     }
 

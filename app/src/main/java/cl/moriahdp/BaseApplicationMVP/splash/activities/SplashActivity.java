@@ -5,11 +5,11 @@ import android.support.annotation.Nullable;
 
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseActivity;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.splash.model.SplashModel;
 import cl.moriahdp.BaseApplicationMVP.splash.presenter.SplashPresenter;
 import cl.moriahdp.BaseApplicationMVP.splash.view.SplashView;
 import cl.moriahdp.BaseApplicationMVP.utils.bus.BusProvider;
-import cl.moriahdp.BaseApplicationMVP.utils.data.ApiUtils;
 
 public class SplashActivity extends BaseActivity {
 
@@ -19,8 +19,9 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SplashView splashView = new SplashView(this, BusProvider.getInstance());
-        mSplashPresenter = new SplashPresenter(new SplashModel(BusProvider.getInstance(), ApiUtils.getAPIService()), splashView);
+        mSplashPresenter = new SplashPresenter(
+                new SplashModel(new DataRepository(SplashActivity.this), BusProvider.getInstance()),
+                new SplashView(this, BusProvider.getInstance()));
         hideToolbar();
     }
 

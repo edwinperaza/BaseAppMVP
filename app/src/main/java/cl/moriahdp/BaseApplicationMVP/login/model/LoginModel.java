@@ -3,6 +3,7 @@ package cl.moriahdp.BaseApplicationMVP.login.model;
 import com.squareup.otto.Bus;
 
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseModel;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.login.modelObject.LoginModelObject;
 import cl.moriahdp.BaseApplicationMVP.registry.modelObject.ResetPasswordModelObject;
 import cl.moriahdp.BaseApplicationMVP.utils.data.APIService;
@@ -12,12 +13,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class LoginModel extends BaseModel {
+public class LoginModel extends BaseModel<DataRepository> {
 
     private final static String TAG = LoginModel.class.getSimpleName();
 
-    public LoginModel(Bus bus) {
-        super(bus);
+    public LoginModel(DataRepository repository, Bus bus) {
+        super(repository, bus);
     }
 
     public void loginUser(LoginModelObject loginModelObject) {

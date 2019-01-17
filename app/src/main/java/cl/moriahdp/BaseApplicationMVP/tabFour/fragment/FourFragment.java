@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.main.activities.DashboardActivity;
 import cl.moriahdp.BaseApplicationMVP.tabFour.model.FourModel;
 import cl.moriahdp.BaseApplicationMVP.tabFour.presenter.FourPresenter;
@@ -18,7 +19,6 @@ import cl.moriahdp.BaseApplicationMVP.utils.bus.BusProvider;
 public class FourFragment extends BaseFragment implements IBackPressedCallback {
 
     private static String FOUR_TAG = "FourFragment";
-    private View mRoot;
     private FourPresenter fourPresenter;
 
     public static FourFragment newInstance() {
@@ -41,11 +41,11 @@ public class FourFragment extends BaseFragment implements IBackPressedCallback {
 
     @Override
     protected View onCreateEventView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.fragment_three, container, false);
+        View root = inflater.inflate(R.layout.fragment_three, container, false);
         fourPresenter = new FourPresenter(
-                new FourModel(BusProvider.getInstance()),
-                new FourView(this, mRoot, BusProvider.getInstance()));
-        return mRoot;
+                new FourModel(new DataRepository(getContext()), BusProvider.getInstance()),
+                new FourView(this, root, BusProvider.getInstance()));
+        return root;
     }
 
     @Override

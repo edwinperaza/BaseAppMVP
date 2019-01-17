@@ -6,9 +6,9 @@ import android.os.Looper;
 import com.squareup.otto.Bus;
 
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseModel;
-import cl.moriahdp.BaseApplicationMVP.utils.data.APIService;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 
-public class SplashModel extends BaseModel {
+public class SplashModel extends BaseModel<DataRepository> {
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
     private Runnable finalDialogRunnable = new Runnable() {
@@ -18,8 +18,8 @@ public class SplashModel extends BaseModel {
         }
     };
 
-    public SplashModel(Bus bus, APIService apiService) {
-        super(bus);
+    public SplashModel(DataRepository repository, Bus bus) {
+        super(repository, bus);
     }
 
     public void startTimer() {

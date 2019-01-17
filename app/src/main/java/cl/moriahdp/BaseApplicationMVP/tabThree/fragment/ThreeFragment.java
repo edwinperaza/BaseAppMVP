@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.main.activities.DashboardActivity;
 import cl.moriahdp.BaseApplicationMVP.tabThree.model.ThreeModel;
 import cl.moriahdp.BaseApplicationMVP.tabThree.presenter.ThreePresenter;
@@ -43,7 +44,7 @@ public class ThreeFragment extends BaseFragment implements IBackPressedCallback 
     protected View onCreateEventView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.fragment_three, container, false);
         threePresenter = new ThreePresenter(
-                new ThreeModel(BusProvider.getInstance()),
+                new ThreeModel(new DataRepository(getContext()), BusProvider.getInstance()),
                 new ThreeView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
     }

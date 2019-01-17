@@ -5,6 +5,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseActivity;
+import cl.moriahdp.BaseApplicationMVP.repository.DataRepository;
 import cl.moriahdp.BaseApplicationMVP.registry.model.RegistryModel;
 import cl.moriahdp.BaseApplicationMVP.registry.presenter.RegistryPresenter;
 import cl.moriahdp.BaseApplicationMVP.registry.view.RegistryView;
@@ -19,7 +20,7 @@ public class RegistryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
         RegistryView registryView = new RegistryView(this, BusProvider.getInstance());
-        mRegistryPresenter = new RegistryPresenter(new RegistryModel(BusProvider.getInstance()), registryView);
+        mRegistryPresenter = new RegistryPresenter(new RegistryModel(new DataRepository(RegistryActivity.this), BusProvider.getInstance()), registryView);
         ButterKnife.bind(registryView, this);
         hideToolbar();
     }

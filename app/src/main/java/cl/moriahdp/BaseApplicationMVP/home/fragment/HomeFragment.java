@@ -6,17 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cl.moriahdp.BaseApplicationMVP.BaseApplication;
 import cl.moriahdp.BaseApplicationMVP.R;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseFragment;
 import cl.moriahdp.BaseApplicationMVP.baseclasses.IBackPressedCallback;
-import cl.moriahdp.BaseApplicationMVP.db.AppDatabase;
+import cl.moriahdp.BaseApplicationMVP.repository.HomeModelRepository;
 import cl.moriahdp.BaseApplicationMVP.home.model.HomeModel;
 import cl.moriahdp.BaseApplicationMVP.home.presenter.HomePresenter;
 import cl.moriahdp.BaseApplicationMVP.home.view.HomeView;
 import cl.moriahdp.BaseApplicationMVP.main.activities.DashboardActivity;
 import cl.moriahdp.BaseApplicationMVP.utils.bus.BusProvider;
-import cl.moriahdp.BaseApplicationMVP.utils.data.ApiUtils;
 
 public class HomeFragment extends BaseFragment implements IBackPressedCallback {
 
@@ -42,10 +40,8 @@ public class HomeFragment extends BaseFragment implements IBackPressedCallback {
         mRoot = inflater.inflate(R.layout.fragment_home, container, false);
         homePresenter = new HomePresenter(
                 new HomeModel(
-                        BusProvider.getInstance(),
-                        ApiUtils.getAPIService(),
-                        AppDatabase.getDatabase(getContext()),
-                        BaseApplication.getDatabaseIO()),
+                        new HomeModelRepository(getContext()),
+                        BusProvider.getInstance()),
                 new HomeView(this, mRoot, BusProvider.getInstance()));
         return mRoot;
     }

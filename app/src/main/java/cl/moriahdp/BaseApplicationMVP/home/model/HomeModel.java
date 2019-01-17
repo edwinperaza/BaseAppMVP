@@ -3,38 +3,28 @@ package cl.moriahdp.BaseApplicationMVP.home.model;
 import com.squareup.otto.Bus;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import cl.moriahdp.BaseApplicationMVP.baseclasses.BaseModel;
-import cl.moriahdp.BaseApplicationMVP.db.AppDatabase;
+import cl.moriahdp.BaseApplicationMVP.repository.HomeModelRepository;
+import cl.moriahdp.BaseApplicationMVP.db.ResponseListener;
 import cl.moriahdp.BaseApplicationMVP.home.modelObject.HomeModelObject;
-import cl.moriahdp.BaseApplicationMVP.utils.data.APIService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class HomeModel extends BaseModel {
+public class HomeModel extends BaseModel<HomeModelRepository> {
 
-    private APIService apiService;
-    private AppDatabase appDatabase;
-    private Executor executor;
 
-    public HomeModel(Bus bus, APIService apiService, AppDatabase appDatabase, Executor executor) {
-        super(bus);
-        this.apiService = apiService;
-        this.appDatabase = appDatabase;
-        this.executor = executor;
+    public HomeModel(HomeModelRepository homeModelRepository, Bus bus) {
+        super(homeModelRepository, bus);
     }
 
     public void requestHomeItemList() {
-        executor.execute(new Runnable() {
+        repository.getAllHomeModelObjectFromDatabase(new ResponseListener<List<HomeModelObject>>() {
             @Override
-            public void run() {
-                bus.post(new RequestHomeListSuccess(appDatabase.homeModelObjectDao().getAll()));
+            public void onResponse(List<HomeModelObject> body) {
+                bus.post(new RequestHomeListSuccess(body));
             }
         });
 
-//        apiService.getHomeItemList().enqueue(new Callback<List<HomeModelObject>>() {
+//        repository.getApiService().getHomeItemList().enqueue(new Callback<List<HomeModelObject>>() {
 //            @Override
 //            public void onResponse(Call<List<HomeModelObject>> call, Response<List<HomeModelObject>> response) {
 //                if (response.isSuccessful()) {
